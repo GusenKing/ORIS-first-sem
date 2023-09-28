@@ -39,7 +39,7 @@ public static class ServerManager
         
             try
             {
-                var config = new ConfigLoader().Config;
+                var config = ConfigLoader.Config;
                 
                 server.Prefixes.Add($"{config.Address}:{config.Port}/");
                 server.Start(); 
@@ -54,22 +54,36 @@ public static class ServerManager
                         break;
                     }
                     var context = await server.GetContextAsync();
-                    var desiredPath = context.Request.Url.AbsolutePath;
+                    var desiredPath = config.StaticFilesPath + context.Request.Url.AbsolutePath;
                     var response = context.Response;
-                    byte[] pageBytes;
-                    
-                    if (!File.Exists("." + desiredPath))
-                        pageBytes = Encoding.UTF8.GetBytes(_errorPage);
-                    else if (desiredPath == "\\")
-                        pageBytes = File.ReadAllBytes($".\\{config.StaticFilesPath}\\index.html");
+                    byte[] contentBytes;
+
+                    if (desiredPath.EndsWith(".html"))
+                    {
+                        if (!File.Exists(desiredPath))
+                            contentBytes = Encoding.UTF8.GetBytes(_errorPage);
+                        else if (desiredPath == "staic\\")
+                            contentBytes = File.ReadAllBytes($".\\{config.StaticFilesPath}\\index.html");
+                        else
+                            contentBytes = File.ReadAllBytes($".\\{desiredPath}");
+                        response.ContentEncoding = Encoding.UTF8;
+                    }
+                    else if (desiredPath.EndsWith(".ico"))
+                        contentBytes = new byte[] {};
+                    else if (desiredPath.EndsWith(".svg"))
+                    {
+                        contentBytes = File.ReadAllBytes(desiredPath);
+                        response.ContentType = "image/svg";
+                    }
                     else
-                        pageBytes = File.ReadAllBytes($".\\{desiredPath}");
+                    {
+                        contentBytes = File.ReadAllBytes(desiredPath);
+                    }
                     
-                    response.ContentLength64 = pageBytes.Length;
-                    response.ContentEncoding = Encoding.UTF8;
+                    response.ContentLength64 = contentBytes.Length;
                     using Stream output = response.OutputStream;
-        
-                    await output.WriteAsync(pageBytes);
+                        
+                    await output.WriteAsync(contentBytes);
                     await output.FlushAsync();
         
                     Console.WriteLine("Запрос обработан");

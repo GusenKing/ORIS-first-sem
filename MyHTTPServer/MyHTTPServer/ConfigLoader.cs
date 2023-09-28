@@ -2,11 +2,11 @@
 
 namespace MyHTTPServer;
 
-public class ConfigLoader
+public static class ConfigLoader
 {
     const string configFilePath = @".\appsettings.json";
     
-    public AppSettingConfig Config { get; private set; }
+    public static AppSettingConfig Config { get; private set; }
     
     private static void CheckConfig()
     {
@@ -17,7 +17,7 @@ public class ConfigLoader
         }
     }
 
-    public ConfigLoader()
+    static ConfigLoader()
     {
         CheckConfig();
         var config = new AppSettingConfig();
