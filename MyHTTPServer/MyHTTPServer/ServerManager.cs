@@ -56,16 +56,27 @@ public static class ServerManager
                     var context = await server.GetContextAsync();
                     var desiredPath = config.StaticFilesPath + context.Request.Url.AbsolutePath;
                     var response = context.Response;
+                    var request = context.Request;
                     byte[] contentBytes;
 
-                    if (desiredPath.EndsWith(".html"))
+                    if (request.HttpMethod.Equals("Post", StringComparison.OrdinalIgnoreCase) && request.Url.AbsolutePath == "/send-email")
                     {
-                        if (!File.Exists(desiredPath))
-                            contentBytes = Encoding.UTF8.GetBytes(_errorPage);
-                        else if (desiredPath == "staic\\")
-                            contentBytes = File.ReadAllBytes($".\\{config.StaticFilesPath}\\index.html");
+                        var stream = new StreamReader(request.InputStream);
+                        var input = await stream.ReadToEndAsync();
+
+                        string[] parsedInput = input.Split("&");
+                        Server.SendEmailAsync(parsedInput[0], parsedInput[1]);
+                    }
+
+                    if (desiredPath == "static/")
+                        contentBytes = File.ReadAllBytes($"./{config.StaticFilesPath}/index.html");
+                    
+                    else if (desiredPath.EndsWith(".html"))
+                    {
+                        if (File.Exists(desiredPath))
+                            contentBytes = File.ReadAllBytes($"./{desiredPath}");
                         else
-                            contentBytes = File.ReadAllBytes($".\\{desiredPath}");
+                            contentBytes = Encoding.UTF8.GetBytes(_errorPage);
                         response.ContentEncoding = Encoding.UTF8;
                     }
                     else if (desiredPath.EndsWith(".ico"))
@@ -73,7 +84,7 @@ public static class ServerManager
                     else if (desiredPath.EndsWith(".svg"))
                     {
                         contentBytes = File.ReadAllBytes(desiredPath);
-                        response.ContentType = "image/svg";
+                        response.ContentType = "image/svg+xml";
                     }
                     else
                     {
