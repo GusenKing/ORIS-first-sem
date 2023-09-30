@@ -194,7 +194,7 @@ h3{
     text-align: center;
 }
 
-.submit-btn button{
+.submit-btn input{
     margin-top: 5px;
     margin-bottom: 6px;
     display: block;

