@@ -28,6 +28,7 @@ public class EmailSenderService : IEmailSenderService
         ContentDisposition disposition = data.ContentDisposition;
         disposition.FileName = $"ProjectArchived_{DateTime.Now.ToString()}";
         mail.Attachments.Add(data);
+        Console.WriteLine("Письмо сгенерировано");
         
         SmtpClient smtp = new SmtpClient(SmtpServerHost, SmtpServerPort);
         smtp.Credentials = new NetworkCredential(EmailSender, PasswordSender);

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using MyHTTPServer.Handlers;
 using MyHTTPServer.Services;
 
 namespace MyHTTPServer;
@@ -20,6 +21,7 @@ public static class ServerManager
     {
         CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
         CancellationToken token = cancelTokenSource.Token;
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         
         Task task = new Task(ServerLoop, token);
         task.Start();
@@ -58,6 +60,12 @@ public static class ServerManager
                     var desiredPath = config.StaticFilesPath + context.Request.Url.AbsolutePath;
                     var response = context.Response;
                     var request = context.Request;
+                    
+                    Handler staticFilesHandler = new StaticFilesHandler();
+                    Handler controllerHandler = new ControllerHandler();
+                    staticFilesHandler.Successor = controllerHandler;
+                    staticFilesHandler.HandleRequest(context);
+                    
                     byte[] contentBytes;
 
                     if (request.HttpMethod.Equals("Post", StringComparison.OrdinalIgnoreCase) && request.Url.AbsolutePath == "/send-email")
