@@ -5,5 +5,5 @@ namespace MyHTTPServer.Handlers;
 public abstract class Handler
 {
     public Handler Successor { get; set; }
-    public abstract HttpListenerResponse HandleRequest(HttpListenerContext context);
+    public abstract void HandleRequest(HttpListenerContext context);
 }
