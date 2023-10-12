@@ -1,9 +1,9 @@
-using HttpServerBattleNet.Configuration;
+using HttpServer.Configuration;
 using MailKit.Net.Smtp;
 using MimeKit;
 using Org.BouncyCastle.Ocsp;
 
-namespace HttpServerBattleNet.Services;
+namespace HttpServer.Services;
 
 public class EmailSenderService : IEmailSenderService
 {

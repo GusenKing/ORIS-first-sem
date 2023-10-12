@@ -1,4 +1,4 @@
-namespace HttpServerBattleNet.Model;
+namespace HttpServer.Model;
 
 public class Account
 {

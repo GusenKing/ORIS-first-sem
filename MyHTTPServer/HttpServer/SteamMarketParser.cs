@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using HtmlAgilityPack;
 
-namespace HttpServerBattleNet;
+namespace HttpServer;
 
 public class SteamMarketParser
 {

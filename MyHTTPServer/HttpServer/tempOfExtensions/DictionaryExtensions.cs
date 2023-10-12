@@ -1,4 +1,4 @@
-namespace HttpServerBattleNet.asda;
+namespace HttpServer.asda;
 
 public static class DictionaryExtensions
 {

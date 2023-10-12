@@ -1,8 +1,8 @@
 using System.Net;
 using System.Reflection;
-using HttpServerBattleNet.Attribuets;
+using HttpServer.Attribuets;
 
-namespace HttpServerBattleNet.Handler;
+namespace HttpServer.Handler;
 
 public class ControllerHandler : Handler
 {

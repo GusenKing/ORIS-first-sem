@@ -1,8 +1,8 @@
-using HttpServerBattleNet.Attribuets;
-using HttpServerBattleNet.Model;
-using HttpServerBattleNet.Services;
+using HttpServer.Attribuets;
+using HttpServer.Model;
+using HttpServer.Services;
 
-namespace HttpServerBattleNet.Controllers;
+namespace HttpServer.Controllers;
 
 [Controller("Authorize")]
 public class AuthorizeController

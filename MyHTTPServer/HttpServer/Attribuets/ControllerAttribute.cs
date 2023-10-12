@@ -1,4 +1,4 @@
-namespace HttpServerBattleNet.Attribuets;
+namespace HttpServer.Attribuets;
 
 public class ControllerAttribute : Attribute
 {

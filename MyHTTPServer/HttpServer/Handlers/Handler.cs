@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace HttpServerBattleNet.Handler;
+namespace HttpServer.Handler;
 
 public abstract class Handler
 {

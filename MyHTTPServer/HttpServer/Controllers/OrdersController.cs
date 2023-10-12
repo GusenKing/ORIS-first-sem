@@ -1,11 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mime;
 using HtmlAgilityPack;
-
-using HttpServerBattleNet.Attribuets;
+using HttpServer.Attribuets;
 using MimeKit;
 
-namespace HttpServerBattleNet.Controllers;
+namespace HttpServer.Controllers;
 
 [Controller("Orders")]
 public class OrdersController

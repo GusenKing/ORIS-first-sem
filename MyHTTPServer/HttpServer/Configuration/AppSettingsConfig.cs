@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace HttpServerBattleNet.Configuration;
+namespace HttpServer.Configuration;
 
 public class AppSettingsConfig
 {

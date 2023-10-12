@@ -1,4 +1,4 @@
-namespace HttpServerBattleNet.Services;
+namespace HttpServer.Services;
 
 public interface IEmailSenderService
 {

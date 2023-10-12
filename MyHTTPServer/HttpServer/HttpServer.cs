@@ -1,11 +1,11 @@
 using System.Net;
 using System.Text;
-using HttpServerBattleNet.Configuration;
-using HttpServerBattleNet.Handler;
-using HttpServerBattleNet.Services;
+using HttpServer.Configuration;
+using HttpServer.Handler;
+using HttpServer.Services;
 using Newtonsoft.Json;
 
-namespace HttpServerBattleNet;
+namespace HttpServer;
 
 public class HttpServer
 {

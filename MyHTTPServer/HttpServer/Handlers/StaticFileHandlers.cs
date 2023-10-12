@@ -1,9 +1,9 @@
 using System.Net;
-using HttpServerBattleNet.asda;
-using HttpServerBattleNet.Configuration;
-using HttpServerBattleNet.Services;
+using HttpServer.asda;
+using HttpServer.Configuration;
+using HttpServer.Services;
 
-namespace HttpServerBattleNet.Handler;
+namespace HttpServer.Handler;
  
 public class StaticFileHandlers : Handler
 {

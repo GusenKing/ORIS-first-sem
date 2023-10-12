@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using FileNotFoundException = System.IO.FileNotFoundException;
 
-namespace HttpServerBattleNet.Configuration;
+namespace HttpServer.Configuration;
 
 public static class ServerConfiguration
 {
