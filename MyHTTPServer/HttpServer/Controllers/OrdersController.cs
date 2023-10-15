@@ -15,17 +15,11 @@ public class OrdersController
         var wClient = new WebClient();
         HtmlDocument html = new HtmlDocument();
         html.LoadHtml(wClient.DownloadString("https://steamcommunity.com/market/search?q=#p1_popular_desc"));
-        SteamMarketParser.GetCaseLinks(html);
+        SteamMarketParser.GetCaseList(html);
         html.LoadHtml(wClient.DownloadString("https://steamcommunity.com/market/search?q=#p2_popular_desc"));
-        SteamMarketParser.GetCaseLinks(html);
+        SteamMarketParser.GetCaseList(html);
 
-        string page;
-        using (var sr = new StreamReader("newHtml.html"))
-        {
-            var page = sr.ReadToEndAsync();
-        }
-
-        return page;
+        return SteamMarketParser.GetPage();
     }
     
 }
