@@ -1,5 +1,6 @@
 using System.Net;
 using System.Reflection;
+using System.Text;
 using HttpServer.Attribuets;
 
 namespace HttpServer.Handler;
@@ -55,7 +56,7 @@ public class ControllerHandler : Handler
                 .ToArray();
             }
             
-            method?.Invoke(Activator.CreateInstance(controller), queryParams);   
+            context.Response.OutputStream.Write( Encoding.UTF8.GetBytes((string)method?.Invoke(Activator.CreateInstance(controller), queryParams)));   
         }
         catch (ArgumentNullException e)
         {

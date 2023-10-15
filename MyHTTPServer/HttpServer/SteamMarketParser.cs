@@ -3,13 +3,19 @@ using HtmlAgilityPack;
 
 namespace HttpServer;
 
-public class SteamMarketParser
+public static class SteamMarketParser
 {
-    private static List<HtmlNode> caseListingBlocks;
+    private static List<HtmlNode> _caseListingBlocks = new List<HtmlNode>();
     
     public static void GetCaseList(HtmlDocument html)
     {
-        caseListingBlocks = html.GetElementbyId("searchResultsRows").ChildNodes.Where(x => x.Id.Split("_")[0] == "result").ToList();
+
+        // var temp = html.GetElementbyId("searchResultsRows").ChildNodes;
+        // caseListingBlocks = temp.Where(x => x.Id.Split("_")[0] == "resultlink").ToList();
+        for (int i = 0; i < 10; i++)
+        {
+            _caseListingBlocks.Add(html.GetElementbyId($"result_{i}"));
+        }
     }
 
     public static string GetPage()
@@ -18,13 +24,10 @@ public class SteamMarketParser
 
         for (int i = 0; i < 15; i++)
         {
-            var htmlBody = newHtmlDoc.DocumentNode.SelectSingleNode("//body");
-            foreach (var node in caseListingBlocks)
-            {
-                htmlBody.ChildNodes.Add(node);
-            }
+                newHtmlDoc.DocumentNode.AppendChild(_caseListingBlocks[i]);
         }
 
-        return newHtmlDoc.Text;
+        var res = newHtmlDoc.DocumentNode.WriteTo();
+        return res;
     }
 }
