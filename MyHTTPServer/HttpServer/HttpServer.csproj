@@ -18,6 +18,9 @@
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="zippedProject.zip">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="static\images\apple-logo-black.svg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

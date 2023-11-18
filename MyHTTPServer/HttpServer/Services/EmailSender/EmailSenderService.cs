@@ -1,7 +1,9 @@
+using System.Net.Mime;
 using HttpServer.Configuration;
 using MailKit.Net.Smtp;
 using MimeKit;
 using Org.BouncyCastle.Ocsp;
+using ContentDisposition = MimeKit.ContentDisposition;
 
 namespace HttpServer.Services;
 
@@ -22,15 +24,15 @@ public class EmailSenderService : IEmailSenderService
             
             var attachments = new List<MimeEntity>()
             {
-                new MimePart()
+                new MimePart(MediaTypeNames.Application.Zip)
                 {
-                    Content = new MimeContent(File.OpenRead("MyHttpProjectWithEmailSend.zip")),
+                    Content = new MimeContent(File.OpenRead("zippedProject.zip")),
                     ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
                     ContentTransferEncoding = ContentEncoding.Base64,
-                    FileName = "MyHttpProjectWithEmailSend.zip"
+                    FileName = "zippedProject.zip"
                 },
             };
-
+            
             foreach (var mimeEntity in attachments)
                 builder.Attachments.Add(mimeEntity);
             
