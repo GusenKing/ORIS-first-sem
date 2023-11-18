@@ -11,4 +11,10 @@
       <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MyOrm">
+        <HintPath>..\..\MyOrm\MyOrm\bin\Debug\net7.0\MyOrm.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

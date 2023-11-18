@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Plane.Attribuets;
+using MyOrm;
 
 namespace Plane;
 
@@ -9,9 +10,16 @@ public class TableController
     [Get("ShowTable")]
     public string ShowTable()
     {
-        var orm = new ORM();
-        var tableContent = orm.Select(new PlaneInfo()).Result;
-
+        var connectionString =
+            "Server=tcp:192.168.0.21,1433;Database=Planes;User=EminComputer;Password=1234;TrustServerCertificate=true";
+        // var connectionString =
+        //     "Server=localhost;Database=Planes;Trusted_Connection=True;TrustServerCertificate=true";
+        
+        var orm = 
+            new Orm(connectionString);
+        var tableContent = orm.Select(new PlaneInfo())
+            .Result;
+        
         var sb = new StringBuilder();
         sb.Append("<head>\n<meta charset=\"UTF-8\">\n</head>");
         sb.Append("<table>\n<tbody>");
