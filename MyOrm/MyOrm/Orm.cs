@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Reflection;
+using System.Text;
 using Microsoft.Data.SqlClient;
 
 
@@ -19,20 +20,56 @@ public class Orm : IOrmOperations
     {
         _connectionStringBuilder = connectionStringBuilder;
     }
-
-    public Task<bool> Add<T>(T entity)
+    
+    /// <returns>True если произошло успешное добавление строки,
+    /// False, если ни одна строка не изменилась </returns>
+    public async Task<bool> Add<T>(T entity)
     {
-        throw new NotImplementedException();
+        var entityType = entity?.GetType();
+        var propertiesExceptId = entityType?
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => !p.Name.Equals("id", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        var commandStringBuilder = new StringBuilder();
+        commandStringBuilder.Append($"INSERT INTO {entityType?.Name} VALUES (");
+        foreach (var property in propertiesExceptId)
+            commandStringBuilder.Append($"\'{property.GetValue(entity)}\',");
+
+        commandStringBuilder.Replace(",", ");", commandStringBuilder.Length - 1, 1);
+
+        return await ConnectAndExecuteNonQueryAsync(commandStringBuilder.ToString());
     }
 
-    public Task<bool> Update<T>(T entity)
+    /// <returns>True если произошло успешное изменение строки,
+    /// False, если ни одна строка не изменилась </returns>
+    public async Task<bool> Update<T>(T entity)
     {
-        throw new NotImplementedException();
+        var entityType = entity?.GetType();
+        var tableId = entityType?.GetProperty("Id")?.GetValue(entity);
+        var propertiesExceptId = entityType?
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => !p.Name.Equals("id", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        
+        var commandStringBuilder = new StringBuilder();
+        commandStringBuilder.Append($"UPDATE {entityType?.Name} SET ");
+        foreach (var property in propertiesExceptId)
+            commandStringBuilder.Append($"{property.Name} = \'{property.GetValue(entity)}\',");
+        
+        commandStringBuilder.Replace(",", $" WHERE Id = {tableId};", commandStringBuilder.Length - 1, 1);
+        Console.WriteLine(commandStringBuilder.ToString());
+        return await ConnectAndExecuteNonQueryAsync(commandStringBuilder.ToString());
     }
-
-    public Task<bool> Delete<T>(int id)
+    
+    /// <returns>True если произошло успешное удаление строки,
+    /// False, если ни одна строка не изменилась</returns>
+    public async Task<bool> Delete<T>(int id)
     {
-        throw new NotImplementedException();
+        var tableName = typeof(T).Name;
+        var sqlExpression = $"DELETE FROM {tableName} WHERE Id = {id};";
+
+        return await ConnectAndExecuteNonQueryAsync(sqlExpression);
     }
 
     public async Task<List<T>> Select<T>(T entity) where T : class, new()
@@ -41,39 +78,76 @@ public class Orm : IOrmOperations
         var tableName = type?.Name;
         List<T> entitiesList = new List<T>();
 
-        var sqlExpression = $"SELECT * FROM \"{tableName.ToLower()}\"";
-        await using SqlConnection connection = new SqlConnection(_connectionStringBuilder.ConnectionString);
-        await connection.OpenAsync();
-
-        SqlCommand command = new SqlCommand(sqlExpression, connection);
-        var dataTable = new DataTable();
-        dataTable.Load(await command.ExecuteReaderAsync());
-
-        foreach (var row in dataTable.AsEnumerable())
+        var sqlQuery = $"SELECT * FROM \"{tableName.ToLower()}\"";
+        await using (SqlConnection connection = new SqlConnection(_connectionStringBuilder.ConnectionString))
         {
-            T obj = new T();
+            await connection.OpenAsync();
 
-            foreach (var prop in obj.GetType().GetProperties())
+            SqlCommand command = new SqlCommand(sqlQuery, connection);
+            var dataTable = new DataTable();
+            dataTable.Load(await command.ExecuteReaderAsync());
+
+            foreach (var row in dataTable.AsEnumerable())
+            {
+                T obj = new T();
+
+                foreach (var prop in obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                {
+                    try
+                    {
+                        prop.SetValue(obj, Convert.ChangeType(row[prop.Name], prop.PropertyType), null);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Caught exception while querying database {ex.Message}");
+                    }
+                }
+                entitiesList.Add(obj);
+            }
+            return entitiesList;
+        }
+    }
+
+    public async Task<T> SelectById<T>(int id) where T : class, new()
+    {
+        var type = typeof(T);
+        T obj = new T();
+
+        var sqlQuery = $"SELECT * FROM {type.Name} WHERE Id = {id};";
+        await using (SqlConnection connection = new SqlConnection(_connectionStringBuilder.ConnectionString))
+        {
+            await connection.OpenAsync();
+
+            var command = new SqlCommand(sqlQuery, connection);
+            var dataTable = new DataTable();
+            dataTable.Load(await command.ExecuteReaderAsync());
+            var dataRow = dataTable.AsEnumerable().First();
+            
+            foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 try
                 {
-                    PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
-                    propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
+                    property.SetValue(obj, Convert.ChangeType(dataRow[property.Name], property.PropertyType));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    continue;
+                    Console.WriteLine($"Caught exception while querying database {ex.Message}");
                 }
             }
 
-            entitiesList.Add(obj);
+            return obj;
         }
-
-        return entitiesList;
     }
 
-    public Task<T> SelectById<T>(int id)
+    private async Task<bool> ConnectAndExecuteNonQueryAsync(string sqlExpression)
     {
-        throw new NotImplementedException();
+        await using (SqlConnection connection = new SqlConnection(_connectionStringBuilder.ConnectionString))
+        {
+            await connection.OpenAsync();
+
+            var command = new SqlCommand(sqlExpression, connection);
+            var number = await command.ExecuteNonQueryAsync();
+            return number != 0;
+        }
     }
 }

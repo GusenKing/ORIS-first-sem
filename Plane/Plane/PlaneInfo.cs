@@ -2,7 +2,7 @@
 
 public class PlaneInfo
 {
-    public int Planeid { get; set; }
+    public int Id { get; set; }
     
     public string PlaneName { get; set; }
     

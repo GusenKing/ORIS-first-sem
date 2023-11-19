@@ -11,7 +11,7 @@ public class TableController
     public string ShowTable()
     {
         var connectionString =
-            "Server=tcp:192.168.0.21,1433;Database=Planes;User=EminComputer;Password=1234;TrustServerCertificate=true";
+            "Server=tcp:192.168.1.136,1433;Database=Planes;User=EminComputer;Password=1234;TrustServerCertificate=true";
         // var connectionString =
         //     "Server=localhost;Database=Planes;Trusted_Connection=True;TrustServerCertificate=true";
         
@@ -25,7 +25,7 @@ public class TableController
         sb.Append("<table>\n<tbody>");
         foreach (var rowElement in tableContent)
         {
-            sb.Append($"<tr>\n<td>{rowElement.Planeid}</td>");
+            sb.Append($"<tr>\n<td>{rowElement.Id}</td>");
             sb.Append($"<td>{rowElement.PlaneName}</td>");
             sb.Append($"<td>{rowElement.IsOperating}</td>");
             sb.Append($"<td>{rowElement.LastFlightDate}</td>");
