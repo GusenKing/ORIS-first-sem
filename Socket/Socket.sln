@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServer", "SocketServer\SocketServer.csproj", "{A8BDD9D1-BD20-4EA7-A7F2-82E2D68293B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XProtocol", "XProtocol\XProtocol.csproj", "{CADA8A97-78DC-415E-8B1C-86A045CC0385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClient", "SocketClient\SocketClient.csproj", "{EBD06B98-7750-4142-9E0F-7EA1CCAEC06D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8BDD9D1-BD20-4EA7-A7F2-82E2D68293B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BDD9D1-BD20-4EA7-A7F2-82E2D68293B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BDD9D1-BD20-4EA7-A7F2-82E2D68293B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BDD9D1-BD20-4EA7-A7F2-82E2D68293B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CADA8A97-78DC-415E-8B1C-86A045CC0385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CADA8A97-78DC-415E-8B1C-86A045CC0385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CADA8A97-78DC-415E-8B1C-86A045CC0385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADA8A97-78DC-415E-8B1C-86A045CC0385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD06B98-7750-4142-9E0F-7EA1CCAEC06D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD06B98-7750-4142-9E0F-7EA1CCAEC06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD06B98-7750-4142-9E0F-7EA1CCAEC06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD06B98-7750-4142-9E0F-7EA1CCAEC06D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
