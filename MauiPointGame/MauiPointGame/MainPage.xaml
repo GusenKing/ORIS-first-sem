@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiPointGame.MainPage">
+
+    <FlexLayout
+        AlignItems="Stretch"
+        JustifyContent="Center"
+        Direction="Row">
+        <VerticalStackLayout
+            x:Name="StartupLayout"
+            IsVisible="True"
+            Margin="0"
+            Padding="30,0"
+            Spacing="25"
+            BackgroundColor="White"
+            >
+            <Label
+                x:Name="LoginLabel"
+                Text="Введите ваше имя"
+                Style="{StaticResource SubHeadline}"
+                TextColor="Black"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Ввод имени"/>
+            <Entry 
+                Style="{StaticResource SubHeadline}"
+                TextColor="Black">
+            </Entry>
+            <Button
+                x:Name="LoginBtn"
+                Text="Войти" 
+                SemanticProperties.Hint="Connect to point game server and log in"
+                Clicked="OnLoginClicked"
+                HorizontalOptions="Fill"/>
+        </VerticalStackLayout>
+        <HorizontalStackLayout
+            x:Name="MainLayout"
+            IsVisible="False"
+            >
+            <ListView 
+                x:Name="UsersList"
+                HorizontalOptions="Start"
+                BackgroundColor="LightGray"
+                
+                >
+            </ListView>
+        </HorizontalStackLayout>
+    </FlexLayout>
+    
+    
+    
+    
+
+</ContentPage>
