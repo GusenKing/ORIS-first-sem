@@ -1,4 +1,6 @@
-﻿namespace PointGame
+﻿using System.Net.Http.Headers;
+
+namespace PointGame
 {
     partial class Form1
     {
@@ -78,6 +80,9 @@
             testLabel.Size = new Size(50, 20);
             testLabel.TabIndex = 4;
             testLabel.Text = "label2";
+            var rnd = new Random();
+
+            testLabel.ForeColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
             // 
             // Form1
             // 
